@@ -3,12 +3,12 @@
     <router-link to="/admin">
       Home
     </router-link>
-    <h1>Add a pizza spot</h1>
-    <form @submit.prevent="addLocation">
+    <h1>Edit this pizza spot</h1>
+    <form @submit.prevent="submitEdit">
       <div :class="$style.inputRow">
         <span>name</span>
         <input
-          v-model="form.name"
+          v-model="location.name"
           placeholder="Scooter's Shack"
           @input="resetMessages"
         />
@@ -16,7 +16,7 @@
       <div :class="$style.inputRow">
         <span>location</span>
         <input
-          v-model="form.location"
+          v-model="location.location"
           placeholder="Sloan's Lake"
           @input="resetMessages"
         />
@@ -50,10 +50,10 @@
 import firebase from 'firebase';
 
 export default {
-  name: 'AddLocation',
+  name: 'EditLocation',
 
   data: () => ({
-    form: {
+    location: {
       name: '',
       location: '',
     },
@@ -64,39 +64,49 @@ export default {
 
   computed: {
     isValid() {
-      return Object.values(this.form).every(d => d);
+      return Object.values(this.location).every(d => d);
     },
   },
 
+  created() {
+    // Fetch the location given the location ID
+    const { id } = this.$route.params;
+    const db = firebase.firestore();
+    db.collection('locations').doc(id).get()
+      .then((doc) => {
+        this.location = {
+          ...doc.data(),
+        };
+      });
+  },
+
   methods: {
-    addLocation() {
+    resetMessages() {
+      this.showError = false;
+      this.showServerError = false;
+      this.showSuccess = false;
+    },
+
+    submitEdit() {
       if (!this.isValid) {
         this.showError = true;
         return;
       }
 
-      this.showError = false;
+      this.resetMessages();
 
+      const { id } = this.$route.params;
       const db = firebase.firestore();
-      db.collection('locations').add({
-        name: this.form.name,
-        location: this.form.location,
+      db.collection('locations').doc(id).update({
+        name: this.location.name,
+        location: this.location.location,
       })
         .then(() => {
           this.showSuccess = true;
-          Object.keys(this.form).forEach((formKey) => {
-            this.form[formKey] = '';
-          });
         })
         .catch(() => {
           this.showServerError = true;
         });
-    },
-
-    resetMessages() {
-      this.showError = false;
-      this.showServerError = false;
-      this.showSuccess = false;
     },
   },
 };

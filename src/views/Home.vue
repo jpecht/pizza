@@ -23,7 +23,10 @@
             v-for="location in locations"
             :key="location.name"
           >
-            <PizzaPreview :location="location" />
+            <PizzaPreview
+              :canEdit="isAdmin"
+              :location="location"
+            />
           </li>
         </ul>
       </div>
@@ -59,7 +62,10 @@ export default defineComponent({
     const db = firebase.firestore();
     db.collection('locations').get()
       .then((querySnapshot) => {
-        this.locations = querySnapshot.docs.map(d => d.data());
+        this.locations = querySnapshot.docs.map(d => ({
+          ...d.data(),
+          id: d.id,
+        }));
       });
   },
 });
