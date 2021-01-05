@@ -7,28 +7,40 @@
       reviewed by the "homies"
     </h2>
     <div :class="$style.main">
-      <div
-        v-if="isAdmin"
-        :class="$style.addButtonContainer"
-      >
-        <router-link to="/add">
-          <button :class="$style.addButton">
-            Add a new pizza spot
-          </button>
-        </router-link>
+      <div :class="$style.mainContent">
+        <div
+          v-if="isAdmin"
+          :class="$style.addButtonContainer"
+        >
+          <router-link to="/add">
+            <button :class="$style.addButton">
+              Add a new pizza spot
+            </button>
+          </router-link>
+        </div>
+        <div :class="$style.listContainer">
+          <ul>
+            <li
+              v-for="location in locations"
+              :key="location.name"
+            >
+              <PizzaPreview
+                :canEdit="isAdmin"
+                :location="location"
+              />
+            </li>
+          </ul>
+        </div>
       </div>
-      <div :class="$style.listContainer">
-        <ul>
-          <li
-            v-for="location in locations"
-            :key="location.name"
-          >
-            <PizzaPreview
-              :canEdit="isAdmin"
-              :location="location"
-            />
-          </li>
-        </ul>
+      <div :class="$style.mapContent">
+        <iframe
+          width="800"
+          height="400"
+          frameborder="0"
+          style="border:0"
+          :src="`https://www.google.com/maps/embed/v1/place?key=${googleApiKey}&q=place_id:ChIJh5CRUXuHa4cR6gH1P0MAGEo&zoom=14`"
+          allowfullscreen
+        />
       </div>
     </div>
   </div>
@@ -54,6 +66,7 @@ export default defineComponent({
   },
 
   data: () => ({
+    googleApiKey: 'AIzaSyBcFhZMc4UwaXgQA-tKKmVJzezkHSfTapo',
     locations: [],
   }),
 
@@ -81,7 +94,14 @@ export default defineComponent({
   font-weight: 300;
 }
 
-.main { margin-top: 40px; }
+.main {
+  display: flex;
+  margin-top: 40px;
+}
+
+.mainContent {
+  flex: 1;
+}
 
 .listContainer {
   ul {

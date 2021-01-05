@@ -14,10 +14,18 @@
         />
       </div>
       <div :class="$style.inputRow">
-        <span>location</span>
+        <span>location name</span>
         <input
           v-model="location.location"
           placeholder="Sloan's Lake"
+          @input="resetMessages"
+        />
+      </div>
+      <div :class="$style.inputRow">
+        <span>google place id</span>
+        <input
+          v-model="location.googlePlaceId"
+          placeholder="xxxxxxxxxxxxxxxxxxxxxxxxx"
           @input="resetMessages"
         />
       </div>
@@ -37,7 +45,7 @@
         v-show="showSuccess"
         :class="$style.success"
       >
-        Location added!
+        Location updated!
       </div>
       <button :class="$style.submitButton">
         submit
@@ -54,6 +62,7 @@ export default {
 
   data: () => ({
     location: {
+      googlePlaceId: '',
       name: '',
       location: '',
     },
@@ -98,6 +107,7 @@ export default {
       const { id } = this.$route.params;
       const db = firebase.firestore();
       db.collection('locations').doc(id).update({
+        googlePlaceId: this.location.googlePlaceId,
         name: this.location.name,
         location: this.location.location,
       })
@@ -133,6 +143,7 @@ export default {
     margin-top: 3px;
     outline: none;
     padding: 4px 10px;
+    width: 240px;
   }
 }
 
