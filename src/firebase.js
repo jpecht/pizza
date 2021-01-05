@@ -1,16 +1,16 @@
 import firebase from 'firebase';
+import 'firebase/firestore';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
-  apiKey: "AIzaSyAE5C_pHxEmRSlIloQLgPtPb2CF_1RZBWE",
-  authDomain: "pizza-58c02.firebaseapp.com",
-  databaseURL: "https://pizza-58c02-default-rtdb.firebaseio.com",
-  projectId: "pizza-58c02",
-  storageBucket: "pizza-58c02.appspot.com",
-  messagingSenderId: "367689442981",
-  appId: "1:367689442981:web:61774f2578c825a71b8f4c",
-  measurementId: "G-BEF04ZEKTL"
+  apiKey: 'AIzaSyBx2H1nHy2uUSANxQFeWAlzyt1r_yWv3IM',
+  authDomain: 'pizza-e0f23.firebaseapp.com',
+  projectId: 'pizza-e0f23',
+  storageBucket: 'pizza-e0f23.appspot.com',
+  messagingSenderId: '882016527716',
+  appId: '1:882016527716:web:47ffe71bd11ffd13938671',
+  measurementId: 'G-6TRX9QHCVY',
 };
 
 // Initialize Firebase
